@@ -9,16 +9,41 @@
  * @author asoomro
  * showGroup method was done by Zeb from stackoverflow
  */
-public class ShowStudent {
+public class showMethods {
 
     /*
     assuming we got all the connections done
     it shows the whole table 
      */
-    public static void  showGroup() {
+    public static void  showGroups() {
         
         try{
         ResultSet resultSet = connect().executeQuery("SELECT * from groups");
+        ResultSetMetaData rsmd = resultSet.getMetaData();
+        int columnsNumber = rsmd.getColumnCount();
+        while (resultSet.next()) {
+            for (int i = 1; i <= columnsNumber; i++) {
+                if (i > 1) {
+                    System.out.print(",  ");
+                }
+                String columnValue = resultSet.getString(i);
+                System.out.print(rsmd.getColumnName(i)+": " +columnValue);   
+               
+            }
+         System.out.println("");
+        } }
+        catch (SQLException ex) {
+            Logger.getLogger(AddS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+    }
+    /*
+    This method shows all the students
+    */
+     public static void  showStudents() {
+        
+        try{
+        ResultSet resultSet = connect().executeQuery("SELECT * from students");
         ResultSetMetaData rsmd = resultSet.getMetaData();
         int columnsNumber = rsmd.getColumnCount();
         while (resultSet.next()) {
@@ -41,9 +66,34 @@ public class ShowStudent {
      * This method shows Students' details based on users input.
      * @param input = what the user inputs  
      */
-    public static void showStudent(String input) {
+    public static void findStudent(String input) {
         try{
         String Query = "SELECT * FROM students";
+     
+        ResultSet resultSet = connect().executeQuery(Query); 
+        ResultSetMetaData rsmd = resultSet.getMetaData();   
+        int columnsNumber = rsmd.getColumnCount();
+        while (resultSet.next()) {
+            if(resultSet.getString(2).toLowerCase().contains(input.toLowerCase())){   
+                 for (int i = 1; i <= columnsNumber; i++) {
+                if (i > 1) {
+                    System.out.print(",  ");
+                }
+                String columnValue = resultSet.getString(i);
+                System.out.print(rsmd.getColumnName(i)+": " +columnValue);
+            }
+            }
+           
+        }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(AddS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+       public static void findTutor(String input) {
+        try{
+        String Query = "SELECT * FROM tutors";
      
         ResultSet resultSet = connect().executeQuery(Query); 
         ResultSetMetaData rsmd = resultSet.getMetaData();   
