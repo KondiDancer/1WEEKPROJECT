@@ -90,10 +90,41 @@ public class showMethods {
             Logger.getLogger(AddS.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+     /**
+     * This method shows tutors details based on users input.
+     * @param input = what the user inputs  
+     */
        public static void findTutor(String input) {
         try{
         String Query = "SELECT * FROM tutors";
+     
+        ResultSet resultSet = connect().executeQuery(Query); 
+        ResultSetMetaData rsmd = resultSet.getMetaData();   
+        int columnsNumber = rsmd.getColumnCount();
+        while (resultSet.next()) {
+            if(resultSet.getString(2).toLowerCase().contains(input.toLowerCase())){   
+                 for (int i = 1; i <= columnsNumber; i++) {
+                if (i > 1) {
+                    System.out.print(",  ");
+                }
+                String columnValue = resultSet.getString(i);
+                System.out.print(rsmd.getColumnName(i)+": " +columnValue);
+            }
+            }
+           
+        }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(AddS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+     /**
+     * This method shows group details based on users input.
+     * @param input = what the user inputs  
+     */
+ public static void findGroup(String input) {
+        try{
+        String Query = "SELECT * FROM groups";
      
         ResultSet resultSet = connect().executeQuery(Query); 
         ResultSetMetaData rsmd = resultSet.getMetaData();   
